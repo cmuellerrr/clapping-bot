@@ -2,6 +2,7 @@
  * Clapping Bot by Chris Mueller
  *
  * An Arduino-powered robot that performs Steve Reich's "Clapping Music"
+ * Currently a proof of concept with LEDs instead of solenoids.
  */
 
 
