@@ -5,7 +5,7 @@
  * Currently a proof of concept with LEDs instead of solenoids.
  */
 
-const int beatLength = 200;
+const int beatLength = 150;
 int lastBeat = 0;
 int timePassed = 0;
 
