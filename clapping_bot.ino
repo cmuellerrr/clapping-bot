@@ -5,7 +5,7 @@
  * Currently a proof of concept with LEDs instead of solenoids.
  */
 
-const int beatLength = 150;
+const int beatLength = 160;
 int lastBeat = 0;
 int timePassed = 0;
 
@@ -15,37 +15,34 @@ const int numPhases = 12;
 int curNote; 
 int curRep;
 int curPhase;
-boolean justShifted;
 
 int pattern1[] = {1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0};
 int pattern2[] = {1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0};
 
-const int player1 = 3;
-const int player2 = 4;
-const int statusLED = 13;
+const int PIN_p1 = 3;
+const int PIN_p2 = 4;
+const int PIN_status = 5;
 
 // the setup routine runs once when you press reset:
 void setup() {                
   // initialize the digital pin as an output.
-  pinMode(player1, OUTPUT);
-  pinMode(player2, OUTPUT);
-  pinMode(statusLED, OUTPUT);
+  pinMode(PIN_p1, OUTPUT);
+  pinMode(PIN_p2, OUTPUT);
+  pinMode(PIN_status, OUTPUT);
   
   start();
 }
 
-void start() {
-  justShifted = false;
-  
+void start() {  
   //start at -1 so we being with the first note
   curNote = -1; 
   curRep = 0;
   curPhase = 0;
   
   for (int i = 0; i < 4; i++) {
-    digitalWrite(statusLED, HIGH);
+    digitalWrite(PIN_status, HIGH);
     delay(250);
-    digitalWrite(statusLED, LOW);
+    digitalWrite(PIN_status, LOW);
     delay(250);
   }
   
@@ -57,14 +54,18 @@ void start() {
 void loop() {
   if (curPhase <= numPhases) {
     update();
-    
-    if (pattern1[curNote]) digitalWrite(player1, HIGH);
-    if (pattern2[curNote]) digitalWrite(player2, HIGH);
+
+    if (curRep == numReps - 1 && curNote == numNotes - 2) digitalWrite(PIN_status, HIGH);
+    //TODO - if you stop it, make sure to turn off the LED
+    if (curRep == 0) digitalWrite(PIN_status, LOW);
+
+    if (pattern1[curNote]) digitalWrite(PIN_p1, HIGH);
+    if (pattern2[curNote]) digitalWrite(PIN_p2, HIGH);
     
     delay(beatLength/2);
     
-    digitalWrite(player1, LOW);
-    digitalWrite(player2, LOW);
+    digitalWrite(PIN_p1, LOW);
+    digitalWrite(PIN_p2, LOW);
   }
 }
 
@@ -72,13 +73,9 @@ void loop() {
 void update() {
   timePassed = millis() - lastBeat;
   
-  if (justShifted) digitalWrite(statusLED, HIGH);
-  
   while(timePassed < beatLength) {
     timePassed = millis() - lastBeat;
   }
-  
-  if (justShifted) digitalWrite(statusLED, LOW); justShifted = false;
   
   curNote++;
   if (curNote >= numNotes) {
@@ -100,5 +97,4 @@ void shift() {
     pattern2[i] = pattern2[i+1];
   }
   pattern2[numNotes-1] = temp;
-  justShifted = true;
 }
