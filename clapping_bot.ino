@@ -39,11 +39,11 @@ void start() {
   curRep = 0;
   curPhase = 0;
   
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 5; i++) {
     digitalWrite(PIN_status, HIGH);
-    delay(250);
+    delay(beatLength);
     digitalWrite(PIN_status, LOW);
-    delay(250);
+    delay(beatLength);
   }
   
   lastBeat = millis();
