@@ -39,7 +39,7 @@ void start() {
   curRep = 0;
   curPhase = 0;
   
-  for (int i = 0; i < 5; i++) {
+  for (int i = 0; i < 4; i++) {
     digitalWrite(PIN_status, HIGH);
     delay(beatLength);
     digitalWrite(PIN_status, LOW);
